@@ -6,8 +6,6 @@ import { client } from "../database";
 export async function ensureEmailIsOnly(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const userEmail: string = req.body.email;
 
-    if (!userEmail) throw new AppError("Email is missing", 400);
-
     const queryString: string = `--sql
         SELECT
             *

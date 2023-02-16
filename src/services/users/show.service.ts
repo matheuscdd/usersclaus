@@ -1,5 +1,6 @@
 import { client } from "../../database";
 import { iUserResultWithoutPassword, iUserWithoutPassword } from "../../interfaces/users.interfaces";
+import { returnUserSchemaWithoutPassword } from "../../schemas/users.schemas";
 
 
 export async function showUsers(): Promise<iUserWithoutPassword[]> {
@@ -21,18 +22,14 @@ export async function showUsers(): Promise<iUserWithoutPassword[]> {
 export async function findUser(idUser: number): Promise<iUserWithoutPassword> {
     const queryString: string = `--sql
         SELECT
-            us.id,
-            us.name,
-            us.email,
-            us.admin,
-            us.active
+            *
         FROM 
-            users us
+            users
         WHERE 
             id = $1;
     `;
 
     const queryResult: iUserResultWithoutPassword = await client.query(queryString, [idUser]);
 
-    return queryResult.rows[0];
+    return returnUserSchemaWithoutPassword.parse(queryResult.rows[0]);
 }
