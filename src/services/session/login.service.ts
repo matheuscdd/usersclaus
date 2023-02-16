@@ -32,5 +32,5 @@ export async function loginUser(user: iUserLoginRequest): Promise<iToken> {
         { expiresIn: "24h", subject: String(userFound.id) }
     );
 
-    return { token }
+    return { token };
 }

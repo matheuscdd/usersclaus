@@ -6,6 +6,8 @@ import { client } from "../database";
 export async function ensureEmailIsOnlyMiddleware(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const userEmail: string = req.body.email;
 
+    if (!userEmail) return next();
+
     const queryString: string = `--sql
         SELECT
             *

@@ -1,5 +1,5 @@
 import { client } from "../../database";
-import { iUserResultWithoutPassword, iUserWithoutPassword } from "../../interfaces/users.interfaces";
+import { iUserResult, iUserResultWithoutPassword, iUserWithoutPassword } from "../../interfaces/users.interfaces";
 import { returnUserSchemaWithoutPassword } from "../../schemas/users.schemas";
 
 
@@ -12,7 +12,9 @@ export async function showUsers(): Promise<iUserWithoutPassword[]> {
             us.admin,
             us.active
         FROM
-            users us;
+            users us
+        ORDER BY 
+            id ASC;
     `;
     const queryResult: iUserResultWithoutPassword = await client.query(queryString);
 
@@ -29,7 +31,7 @@ export async function findUser(id: number): Promise<iUserWithoutPassword> {
             id = $1;
     `;
 
-    const queryResult: iUserResultWithoutPassword = await client.query(queryString, [id]);
+    const queryResult: iUserResult = await client.query(queryString, [id]);
 
     return returnUserSchemaWithoutPassword.parse(queryResult.rows[0]);
 }

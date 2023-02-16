@@ -6,7 +6,8 @@ declare global {
         interface Request {
             token?: string;
             id?: number;
-            user?: iUserWithoutPassword;
+            userToken?: iUserWithoutPassword;
+            userParams?: iUserWithoutPassword;
         }
     }
 }

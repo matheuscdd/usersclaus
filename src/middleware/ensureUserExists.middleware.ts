@@ -21,6 +21,7 @@ export async function ensureUserExistsMiddleware(req: Request, res: Response, ne
 
     if (!queryResult.rowCount) throw new AppError("User not found", 404);
 
+    req.userParams = queryResult.rows[0];
     req.id = id;
 
     return next();

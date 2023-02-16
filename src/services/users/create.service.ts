@@ -2,11 +2,8 @@ import { iUserRequest, iUserResultWithoutPassword, iUserWithoutPassword } from "
 import { client } from "../../database";
 import format from "pg-format";
 import { returnUserSchemaWithoutPassword } from "../../schemas/users.schemas";
-import { hash } from "bcryptjs";
 
 export async function createUser(user: iUserRequest): Promise<iUserWithoutPassword> {
-    user.password = await hash(user.password, 1);
-
     const queryString: string = format(`--sql
         INSERT INTO
             users(%I)

@@ -27,9 +27,9 @@ export async function ensureTokenIsValidMiddleware(req: Request, res: Response, 
 
         const queryResult: iUserResult = await client.query(queryString, [decoded.email]);
 
-        if (!queryResult.rowCount) throw new AppError("User not found", 404);
+        if (!queryResult.rowCount) throw new AppError("Invalid email or password", 404);
 
-        req.user = returnUserSchemaWithoutPassword.parse(queryResult.rows[0]);
+        req.userToken = returnUserSchemaWithoutPassword.parse(queryResult.rows[0]);
     }
 
     await verify(token, String(process.env.SECRET_KEY), check);
