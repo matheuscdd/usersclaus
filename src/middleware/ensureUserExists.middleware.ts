@@ -1,24 +1,27 @@
 import { iUserResult } from "../interfaces/users.interfaces";
 import { NextFunction, Request, Response } from "express";
-import { client } from "../database";
 import { AppError } from "../errors";
+import { client } from "../database";
 
 export async function ensureUserExistsMiddleware(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    const userId: number = Number(req.params.id);
+    const id: number = Number(req.params.id);
+
+    if (isNaN(id)) throw new AppError("Id format is a number", 400);
 
     const queryString: string = `--sql
         SELECT
             *
-        FROM 
+        FROM
             users
-        WHERE 
-            id = $1 and active = true;
+        WHERE
+            id = $1;
     `;
 
-    const queryResult: iUserResult = await client.query(queryString, [userId]);
+    const queryResult: iUserResult = await client.query(queryString, [id]);
 
-    if (queryResult.rowCount === 0) throw new AppError("User not found", 404);
+    if (!queryResult.rowCount) throw new AppError("User not found", 404);
+
+    req.id = id;
 
     return next();
 }
-

@@ -19,7 +19,7 @@ export async function showUsers(): Promise<iUserWithoutPassword[]> {
     return queryResult.rows;
 }
 
-export async function findUser(idUser: number): Promise<iUserWithoutPassword> {
+export async function findUser(id: number): Promise<iUserWithoutPassword> {
     const queryString: string = `--sql
         SELECT
             *
@@ -29,7 +29,7 @@ export async function findUser(idUser: number): Promise<iUserWithoutPassword> {
             id = $1;
     `;
 
-    const queryResult: iUserResultWithoutPassword = await client.query(queryString, [idUser]);
+    const queryResult: iUserResultWithoutPassword = await client.query(queryString, [id]);
 
     return returnUserSchemaWithoutPassword.parse(queryResult.rows[0]);
 }

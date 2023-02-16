@@ -11,8 +11,7 @@ export async function showUserController(req: Request, res: Response): Promise<R
 }
 
 export async function findUserController(req: Request, res: Response): Promise<Response> {
-    const idUser: number = Number(req.params.id);
-    const user: iUserWithoutPassword = await findUser(idUser);
+    const user: iUserWithoutPassword = await findUser(req.id!);
 
     return res.status(200).json(user);
 }
@@ -24,7 +23,7 @@ export async function createUserController(req: Request, res: Response): Promise
 }
 
 export async function profileUserController(req: Request, res: Response): Promise<Response> {
-    const userProfile = await profileUser(req.headers.authorization!);
+    const userProfile = await profileUser(req.user!);
 
-    return res.status(200).json(userProfile)
+    return res.status(200).json(userProfile);
 }

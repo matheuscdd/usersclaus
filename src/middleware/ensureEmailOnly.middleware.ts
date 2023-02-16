@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { AppError } from "../errors";
 import { client } from "../database";
 
-export async function ensureEmailIsOnly(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+export async function ensureEmailIsOnlyMiddleware(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const userEmail: string = req.body.email;
 
     const queryString: string = `--sql

@@ -1,16 +1,16 @@
 import { createUserController, findUserController, profileUserController, showUserController } from "../controllers/users.controllers";
-import { Router } from "express";
-import { ensureUserExistsMiddleware } from "../middleware/ensureUserExists.middleware";
-import { ensureEmailIsOnly } from "../middleware/ensureEmailOnly.middleware";
+import { ensureTokenIsValidMiddleware } from "../middleware/ensureTokenIsValid.middleware";
 import { ensureDataIsValidMiddleware } from "../middleware/ensureDataIsValid.middleware";
+import { ensureUserExistsMiddleware } from "../middleware/ensureUserExists.middleware";
+import { ensureEmailIsOnlyMiddleware } from "../middleware/ensureEmailOnly.middleware";
 import { createUserSchema } from "../schemas/users.schemas";
-
+import { Router } from "express";
 
 const usersRoutes: Router = Router();
 
 usersRoutes.get("", showUserController);
-usersRoutes.post("", ensureDataIsValidMiddleware(createUserSchema), ensureEmailIsOnly, createUserController);
-usersRoutes.get("/profile", profileUserController);
+usersRoutes.post("", ensureDataIsValidMiddleware(createUserSchema), ensureEmailIsOnlyMiddleware, createUserController);
+usersRoutes.get("/profile", ensureTokenIsValidMiddleware, profileUserController);
 usersRoutes.get("/:id", ensureUserExistsMiddleware, findUserController);
 
 export default usersRoutes;
